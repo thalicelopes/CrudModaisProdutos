@@ -1,0 +1,126 @@
+﻿@model Produtos.Web.Models.Categoria
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="modal fade" id="criarCategoria" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Criar Nova Categoria</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="Criar">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="NomeCategoria" class="control-label"></label>
+                        <input asp-for="NomeCategoria" class="form-control" id="NomeProduto"/>
+                        <input onclick="Verificar()" class="btn btn-primary" value="Enviar" />
+                    </div>
+                    <div id="confirma" style="display: none">
+                        Tem certeza que deseja deletar?
+                        <input type="submit" value="Sim" class="btn btn-primary" />
+                        <input type="button" class="btn btn-warning" value="Não" onclick="Fechar()"/>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    </div>
+                </form>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<p>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#criarCategoria">
+        Criar nova categoria
+    </button>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Categorias Disponíveis:
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in ViewBag.Categorias)
+        {
+            <div class="modal fade" id="modal_@item.Id" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Deseja deletar o projeto @item.NomeCategoria ?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <a class="btn btn-secondary" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="details_@item.Id" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Detalhes</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <strong>Nome:</strong> @item.NomeCategoria
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <tr>
+                <td>
+                    @item.NomeCategoria
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#details_@item.Id">
+                        Detalhes
+                    </button> |
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_@item.Id">
+                        Deletar
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script type="text/javascript">
+    function Verificar() {
+        var nomeProduto = document.getElementById("NomeProduto");
+        var confirma = document.getElementById("confirma");
+        //if (nomeProduto.textContent == "") {
+        //    $('#confirma').hide();
+        //    $('#erro').show();
+        //}
+        if (nomeProduto.textContent != "") {
+            confirma.style.display = "block";
+        }
+    }
+    function Fechar() {
+        $('#confirma').hide();
+    }
+</script>
