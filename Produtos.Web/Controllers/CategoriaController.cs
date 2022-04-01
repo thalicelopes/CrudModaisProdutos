@@ -18,7 +18,7 @@ namespace Produtos.Web.Controllers
         }
         public IActionResult Index()
         {
-            ViewBag.Categorias = _context.Categoria.ToList();
+            ViewBag.Categorias = _context.Categoria.Include(x => x.Produto).ToList();
             return View();
         }
         private bool CategoriaExists(int id)
@@ -32,7 +32,7 @@ namespace Produtos.Web.Controllers
                 try
                 {
                     _context.Add(Categoria);
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -54,10 +54,35 @@ namespace Produtos.Web.Controllers
             {
                 return NotFound();
             }
+            var Produtos = _context.Produto.Where(x => x.CategoriaId == id).ToList();
+            _context.Produto.RemoveRange(Produtos);
             var Categoria = await _context.Categoria.FindAsync(id);
             _context.Remove(Categoria);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
-    } 
+        public async Task<IActionResult> Edit([Bind("Id, NomeCategoria")] Categoria Categoria)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(Categoria);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!CategoriaExists(Categoria.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                } 
+            } 
+            return RedirectToAction("Index");
+        }
+    }
 }

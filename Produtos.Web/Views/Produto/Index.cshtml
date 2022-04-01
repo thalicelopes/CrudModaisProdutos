@@ -1,41 +1,136 @@
-﻿@model IEnumerable<Produtos.Web.Models.Produto>
-
+﻿@model Produtos.Web.Models.Produto
 @{
     ViewData["Title"] = "Index";
 }
 
+<div class="modal fade" id="criarProduto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Criar Nova Categoria</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="NomeProduto" class="control-label"></label>
+                        <input asp-for="NomeProduto" class="form-control" />
+                        <span asp-validation-for="NomeProduto" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="QtdeProduto" class="control-label"></label>
+                        <input asp-for="QtdeProduto" class="form-control" />
+                        <span asp-validation-for="QtdeProduto" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="MarcaProduto" class="control-label"></label>
+                        <input asp-for="MarcaProduto" class="form-control" />
+                        <span asp-validation-for="MarcaProduto" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="PrecoProduto" class="control-label"></label>
+                        <input asp-for="PrecoProduto" class="form-control" />
+                        <span asp-validation-for="PrecoProduto" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="CategoriaId" class="control-label"></label>
+                        <select asp-for="CategoriaId" class="form-control" asp-items="ViewBag.CategoriaId"></select>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#criarProduto">
+        Criar novos produtos
+    </button>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.NomeProduto)
+                Nome do Produto
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Categoria)
+                Categoria
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in ViewBag.Produtos) {
-        <tr>
-            <td>
-                @item.NomeProduto)
-            </td>
-            <td>
-                @item.Categoria.NomeCategoria)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in ViewBag.Produtos)
+        {
+            <div class="modal fade" id="detalhes_@item.Id" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Informações de @item.NomeProduto:</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <strong>Nome:</strong> @item.NomeProduto <br />
+                            <strong>Quantidade: </strong> @item.QtdeProduto <br />
+                            <strong>Marca do Produto: </strong> @item.MarcaProduto <br />
+                            <strong>Preço do Produto: </strong> @item.PrecoProduto <br />
+                            <strong>Categoria: </strong>  @item.Categoria.NomeCategoria <br />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="deletar_@item.Id" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Deseja deletar o projeto @item.NomeProduto ?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <a class="btn btn-secondary" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <tr>
+                <td>
+                    @item.NomeProduto
+                </td>
+                <td>
+                    @item.Categoria.NomeCategoria
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#detalhes_@item.Id">
+                        Detalhes
+                    </button>
+                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#deletar_@item.Id">
+                        Deletar
+                    </button>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
