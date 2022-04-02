@@ -1,8 +1,359 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model Produtos.Web.Models.Produto
+@{
+    ViewData["Title"] = "Index";
 }
+<!--Modais de criação e edição de produtos-->
+<div class="modal fade" id="criarProduto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Criar Nova Categoria</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="CriarProduto">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="NomeProduto" class="control-label"></label>
+                        <input asp-for="NomeProduto" class="form-control" />
+                        <span asp-validation-for="NomeProduto" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="QtdeProduto" class="control-label"></label>
+                        <input asp-for="QtdeProduto" class="form-control" />
+                        <span asp-validation-for="QtdeProduto" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="MarcaProduto" class="control-label"></label>
+                        <input asp-for="MarcaProduto" class="form-control" />
+                        <span asp-validation-for="MarcaProduto" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="PrecoProduto" class="control-label"></label>
+                        <input asp-for="PrecoProduto" class="form-control" />
+                        <span asp-validation-for="PrecoProduto" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="CategoriaId" class="control-label"></label>
+                        <select asp-for="CategoriaId" class="form-control" asp-items="ViewBag.CategoriaId">
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+        </div>
+    </div>
 </div>
+
+
+<div class="modal fade" id="editProduto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Criar Nova Categoria</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="EditarProduto">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group" hidden>
+                        <label asp-for="Id" class="control-label"></label>
+                        <input asp-for="Id" class="form-control" id="idProduto"/>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="NomeProduto" class="control-label"></label>
+                        <input asp-for="NomeProduto" class="form-control" id="nomeProduto"/>
+                        <span asp-validation-for="NomeProduto" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="QtdeProduto" class="control-label"></label>
+                        <input asp-for="QtdeProduto" class="form-control" id="qtdProduto"/>
+                        <span asp-validation-for="QtdeProduto" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="MarcaProduto" class="control-label"></label>
+                        <input asp-for="MarcaProduto" class="form-control" id="marcaProduto"/>
+                        <span asp-validation-for="MarcaProduto" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="PrecoProduto" class="control-label"></label>
+                        <input asp-for="PrecoProduto" class="form-control" id="precoProduto"/>
+                        <span asp-validation-for="PrecoProduto" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Categoria Atual: </label>
+                        <input id="categoriasProduto" disabled/>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="CategoriaId" class="control-label"></label>
+                        <select asp-for="CategoriaId" class="form-control" asp-items="ViewBag.CategoriaId">
+                            <option value=0 disabled selected>Clique aqui para escolher uma nova categoria</option>
+                        </select>
+                        <span asp-validation-for="CategoriaId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Save" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Modais para criação e edição de categorias-->
+
+<div class="modal fade" id="criarCategoria" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Criar Nova Categoria</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="CriarCategoria">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Categoria.NomeCategoria" class="control-label"></label>
+                        <input asp-for="Categoria.NomeCategoria" class="form-control" id="NomeCat" type=text/>
+                        <input onclick="Verificar()" type="button" class="btn btn-primary" value="Enviar" />
+                    </div>
+                    <div id="confirma" style="display: none">
+                        Tem certeza que deseja cadastrar?
+                        <input type="submit" value="Sim" class="btn btn-primary" />
+                        <input type="button" class="btn btn-warning" value="Não" onclick="Fechar()" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="editCategoria" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Criar Nova Categoria</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="EditarCategoria">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Categoria.Id" class="control-label"></label>
+                        <input type="text" asp-for="Categoria.Id" id="categoriaCod"/>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Categoria.NomeCategoria" class="control-label"></label>
+                        <input asp-for="Categoria.NomeCategoria" class="form-control" id="categoriaNome"/>
+                        <span asp-validation-for="Categoria.NomeCategoria" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Salvar" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<a href="#tabelaCategoria">Checar categorias</a>
+<p>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#criarProduto">
+        Criar novos produtos
+    </button>
+</p>
+<table class="table w-100">
+    <caption>Table</caption>
+    <thead>
+        <tr>
+            <th>Nome do Produto</th>
+            <th>Categoria</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in ViewBag.Produtos)
+        {
+            <div class="modal fade" id="detalhes_@item.Id" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Informações de @item.NomeProduto:</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <strong>Nome:</strong> @item.NomeProduto <br />
+                            <strong>Quantidade: </strong> @item.QtdeProduto <br />
+                            <strong>Marca do Produto: </strong> @item.MarcaProduto <br />
+                            <strong>Preço do Produto: </strong> @item.PrecoProduto <br />
+                            <strong>Categoria: </strong>  @item.Categoria.NomeCategoria <br />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="deletar_@item.Id" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Deseja deletar o projeto @item.NomeProduto ?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <a class="btn btn-secondary" asp-action="DeletarProduto" asp-route-id="@item.Id">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <tr>
+                <td>
+                    @item.NomeProduto
+                </td>
+                <td>
+                    @item.Categoria.NomeCategoria
+                </td>
+                <td>
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#editProduto" onclick="EditarProduto('@item.Id', '@item.NomeProduto', '@item.QtdeProduto', '@item.MarcaProduto', '@item.PrecoProduto', '@item.Categoria.NomeCategoria')">
+                        Editar
+                    </button>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#detalhes_@item.Id">
+                        Detalhes
+                    </button>
+                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#deletar_@item.Id">
+                        Deletar
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<!--Categorias-->
+<p>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#criarCategoria">
+        Criar nova categoria
+    </button>
+</p>
+<table class="table w-100" id="tabelaCategoria">
+    <thead>
+        <tr>
+            <th>Categorias Disponíveis: </th>
+            <th>Ações: </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in ViewBag.Categorias)
+        {
+            <div class="modal fade" id="modal_@item.Id" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Deseja deletar o projeto @item.NomeCategoria ? Ao deletar, você estará removendo também todos os produtos
+                            com a categoria especificada. Segue a lista dos produtos com a categoria especificada:
+                            @foreach (var proj in item.Produto)
+                            {
+                                <br/> @proj.NomeProduto
+                            }
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <a class="btn btn-secondary" asp-action="DeletarCategoriaProduto" asp-route-id="@item.Id">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="details_@item.Id" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Detalhes</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <strong>Nome:</strong> @item.NomeCategoria
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <tr>
+                <td>
+                    @item.NomeCategoria
+                </td>
+                <td>
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#editCategoria" onclick="EditarCategoria('@item.Id', '@item.NomeCategoria')">
+                        Editar
+                    </button> 
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#details_@item.Id">
+                        Detalhes
+                    </button> 
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_@item.Id">
+                        Deletar
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+<script type="text/javascript">
+    function Verificar() {
+        if (!$('#NomeCat').val()) {
+           alert("Erro no cadastro, favor preencher todos os campos.")
+        }else{
+            $('#confirma').show();
+        }
+    }
+    function Fechar() {
+        $('#confirma').hide();
+    }
+    function EditarCategoria(cod, nome) {
+        document.getElementById('categoriaCod').setAttribute('value', cod);
+        document.getElementById('categoriaNome').setAttribute('value', nome);
+    }
+
+    function EditarProduto(codigo, nome, qtde, marca, preco, categoria){
+        document.getElementById('nomeProduto').setAttribute('value', nome);
+        document.getElementById('idProduto').setAttribute('value', codigo);
+        document.getElementById('qtdProduto').setAttribute('value', qtde);
+        document.getElementById('marcaProduto').setAttribute('value', marca);
+        document.getElementById('precoProduto').setAttribute('value', preco);
+        document.getElementById('categoriasProduto').setAttribute('value', categoria);
+    }
+</script>
