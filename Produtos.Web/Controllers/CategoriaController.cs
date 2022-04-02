@@ -25,7 +25,7 @@ namespace Produtos.Web.Controllers
         {
             return _context.Categoria.Any(e => e.Id == id);
         }
-        public async Task<IActionResult> Criar([Bind("Id, NomeCategoria")] Categoria Categoria)
+        public async Task<IActionResult> CriarCategoria([Bind("Id, NomeCategoria")] Categoria Categoria)
         {
             if (ModelState.IsValid)
             {
@@ -48,7 +48,7 @@ namespace Produtos.Web.Controllers
             }
             return RedirectToAction("Index");
         }
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> DeletarProduto(int? id)
         {
             if (id == null)
             {
@@ -61,7 +61,7 @@ namespace Produtos.Web.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
-        public async Task<IActionResult> Edit([Bind("Id, NomeCategoria")] Categoria Categoria)
+        public async Task<IActionResult> EditarCategoria([Bind("Id, NomeCategoria")] Categoria Categoria)
         {
             if (ModelState.IsValid)
             {

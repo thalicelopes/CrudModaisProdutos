@@ -14,15 +14,15 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form asp-action="Criar">
+                <form asp-action="CriarCategoria">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
                         <label asp-for="NomeCategoria" class="control-label"></label>
-                        <input asp-for="NomeCategoria" class="form-control" id="NomeProduto" />
-                        <input onclick="Verificar()" class="btn btn-primary" value="Enviar" />
+                        <input asp-for="NomeCategoria" class="form-control" id="NomeProduto" type=text/>
+                        <input onclick="Verificar()" type="button" class="btn btn-primary" value="Enviar" />
                     </div>
                     <div id="confirma" style="display: none">
-                        Tem certeza que deseja deletar?
+                        Tem certeza que deseja cadastrar?
                         <input type="submit" value="Sim" class="btn btn-primary" />
                         <input type="button" class="btn btn-warning" value="Não" onclick="Fechar()" />
                     </div>
@@ -46,7 +46,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form asp-action="Edit">
+                <form asp-action="EditarCategoria">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group" hidden>
                         <label asp-for="Id" class="control-label"></label>
@@ -101,7 +101,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <a class="btn btn-secondary" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                            <a class="btn btn-secondary" asp-action="DeletarProduto" asp-route-id="@item.Id">Delete</a>
                         </div>
                     </div>
                 </div>
@@ -130,7 +130,7 @@
                     @item.NomeCategoria
                 </td>
                 <td>
-                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#editCategoria" onclick="Editar('@item.Id', '@item.NomeCategoria')">
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#editCategoria" onclick="EditarCategoria('@item.Id', '@item.NomeCategoria')">
                         Editar
                     </button> |
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#details_@item.Id">
@@ -146,16 +146,16 @@
 </table>
 <script type="text/javascript">
     function Verificar() {
-        var nomeProduto = document.getElementById("NomeProduto");
-        var confirma = document.getElementById("confirma");
-        if (nomeProduto.textContent != "") {
-            confirma.style.display = "block";
+        if (!$('#NomeProduto').val()) {
+           alert("Erro no cadastro.")
+        }else{
+            $('#confirma').show();
         }
     }
     function Fechar() {
         $('#confirma').hide();
     }
-    function Editar(cod, nome) {
+    function EditarCategoria(cod, nome) {
         document.getElementById('categoriaCod').setAttribute('value', cod);
         document.getElementById('categoriaNome').setAttribute('value', nome);
     }

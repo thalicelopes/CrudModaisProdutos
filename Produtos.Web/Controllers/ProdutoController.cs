@@ -23,7 +23,7 @@ namespace Produtos.Web.Controllers
             ViewBag.Produtos = _context.Produto.Include(x => x.Categoria).ToList();
             return View();
         }
-        public async Task<IActionResult> Create(int id, [Bind("Id,NomeProduto,QtdeProduto,MarcaProduto,PrecoProduto,CategoriaId")] Produto produto)
+        public async Task<IActionResult> CriarProduto(int id, [Bind("Id,NomeProduto,QtdeProduto,MarcaProduto,PrecoProduto,CategoriaId")] Produto produto)
         {
             if (ModelState.IsValid)
             {
@@ -50,7 +50,7 @@ namespace Produtos.Web.Controllers
         {
             return _context.Produto.Any(e => e.Id == id);
         }
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> DeletarProduto(int? id)
         {
             if (id == null)
             {
@@ -59,6 +59,29 @@ namespace Produtos.Web.Controllers
             var Produto = await _context.Produto.FindAsync(id);
             _context.Remove(Produto);
             await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
+        public async Task<IActionResult> EditarProduto([Bind("Id,NomeProduto,QtdeProduto,MarcaProduto,PrecoProduto,CategoriaId")] Produto produto)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(produto);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ProdutoExists(produto.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
             return RedirectToAction("Index");
         }
     }
