@@ -7,7 +7,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Criar Nova Categoria</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Criar Novo Produto</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -16,32 +16,39 @@
                 <form asp-action="CriarProduto">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
-                        <label asp-for="NomeProduto" class="control-label"></label>
-                        <input asp-for="NomeProduto" class="form-control" />
+                        <label>Nome do Produto: </label>
+                        <input asp-for="NomeProduto" class="form-control" id="nomeProdCriar"/>
                         <span asp-validation-for="NomeProduto" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="QtdeProduto" class="control-label"></label>
-                        <input asp-for="QtdeProduto" class="form-control" />
+                        <label>Quantidade disponível: </label>
+                        <input asp-for="QtdeProduto" class="form-control" id="qtdProdCriar"/>
                         <span asp-validation-for="QtdeProduto" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="MarcaProduto" class="control-label"></label>
-                        <input asp-for="MarcaProduto" class="form-control" />
+                        <label>Marca: </label>
+                        <input asp-for="MarcaProduto" class="form-control" id="marcaProdCriar"/>
                         <span asp-validation-for="MarcaProduto" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="PrecoProduto" class="control-label"></label>
-                        <input asp-for="PrecoProduto" class="form-control" />
+                        <label>Preço: </label>
+                        <input asp-for="PrecoProduto" class="form-control" id="precoProdCriar"/>
                         <span asp-validation-for="PrecoProduto" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="CategoriaId" class="control-label"></label>
+                        <label>Categorias disponíveis: </label>
                         <select asp-for="CategoriaId" class="form-control" asp-items="ViewBag.CategoriaId">
                         </select>
                     </div>
-                    <div class="form-group">
-                        <input type="submit" value="Create" class="btn btn-primary" />
+                    <div class="form-group text-center">
+                        <div class="row text-center" style="padding-left: 15px">
+                            <input onclick="VerificarCriacaoProduto()" type="button" class="btn btn-primary" value="Enviar" />
+                            <div id="confirmaCriacaoProduto" style="display: none; padding-left: 10px">
+                                Tem certeza que deseja criar o produto?
+                                <input type="submit" value="Sim" class="btn btn-success" />
+                                <input type="button" class="btn btn-danger" value="Não" onclick="FecharCriacaoProduto()" />
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -55,7 +62,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Criar Nova Categoria</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Edição de Produto</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -65,41 +72,48 @@
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group" hidden>
                         <label asp-for="Id" class="control-label"></label>
-                        <input asp-for="Id" class="form-control" id="idProduto"/>
+                        <input asp-for="Id" class="form-control" id="idProduto" />
                     </div>
                     <div class="form-group">
-                        <label asp-for="NomeProduto" class="control-label"></label>
-                        <input asp-for="NomeProduto" class="form-control" id="nomeProduto"/>
+                        <label>Nome do Produto: </label>
+                        <input asp-for="NomeProduto" class="form-control" id="nomeProduto" />
                         <span asp-validation-for="NomeProduto" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="QtdeProduto" class="control-label"></label>
-                        <input asp-for="QtdeProduto" class="form-control" id="qtdProduto"/>
+                        <label>Quantidade disponível: </label>
+                        <input asp-for="QtdeProduto" class="form-control" id="qtdProduto" />
                         <span asp-validation-for="QtdeProduto" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="MarcaProduto" class="control-label"></label>
-                        <input asp-for="MarcaProduto" class="form-control" id="marcaProduto"/>
+                        <label>Marca: </label>
+                        <input asp-for="MarcaProduto" class="form-control" id="marcaProduto" />
                         <span asp-validation-for="MarcaProduto" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="PrecoProduto" class="control-label"></label>
-                        <input asp-for="PrecoProduto" class="form-control" id="precoProduto"/>
+                        <label>Preço: </label>
+                        <input asp-for="PrecoProduto" class="form-control" id="precoProduto" />
                         <span asp-validation-for="PrecoProduto" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label>Categoria Atual: </label>
-                        <input id="categoriasProduto" disabled/>
+                        <input id="categoriasProduto" disabled />
                     </div>
                     <div class="form-group">
-                        <label asp-for="CategoriaId" class="control-label"></label>
+                        <label>Categorias disponíveis: </label>
                         <select asp-for="CategoriaId" class="form-control" asp-items="ViewBag.CategoriaId">
                             <option value=0 disabled selected>Clique aqui para escolher uma nova categoria</option>
                         </select>
                         <span asp-validation-for="CategoriaId" class="text-danger"></span>
                     </div>
-                    <div class="form-group">
-                        <input type="submit" value="Save" class="btn btn-primary" />
+                    <div class="form-group text-center">
+                        <div class="row text-center" style="padding-left: 10px">
+                            <input onclick="VerificarEdicaoProduto()" type="button" class="btn btn-primary" value="Enviar" />
+                            <div id="confirmaEdicaoProduto" style="display: none; padding-left: 10px">
+                                Tem certeza que deseja atualizar o produto?
+                                <input type="submit" value="Sim" class="btn btn-success" />
+                                <input type="button" class="btn btn-danger" value="Não" onclick="FecharEdicaoProduto()" />
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -120,15 +134,19 @@
             <div class="modal-body">
                 <form asp-action="CriarCategoria">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="form-group">
-                        <label asp-for="Categoria.NomeCategoria" class="control-label"></label>
-                        <input asp-for="Categoria.NomeCategoria" class="form-control" id="NomeCat" type=text/>
-                        <input onclick="Verificar()" type="button" class="btn btn-primary" value="Enviar" />
+                    <div class="form-group text-center">
+                        <label>Nome da Categoria: </label>
+                        <input asp-for="Categoria.NomeCategoria" class="form-control" id="NomeCat" type=text />
                     </div>
-                    <div id="confirma" style="display: none">
-                        Tem certeza que deseja cadastrar?
-                        <input type="submit" value="Sim" class="btn btn-primary" />
-                        <input type="button" class="btn btn-warning" value="Não" onclick="Fechar()" />
+                    <div class="form-group text-center">
+                        <div class="row text-center" style="padding-left: 30px">
+                            <input onclick="Verificar()" type="button" class="btn btn-primary" value="Enviar" />
+                            <div id="confirma" style="display: none; padding-left: 10px">
+                                Tem certeza que deseja cadastrar?
+                                <input type="submit" value="Sim" class="btn btn-success" />
+                                <input type="button" class="btn btn-danger" value="Não" onclick="Fechar()" />
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
@@ -144,7 +162,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Criar Nova Categoria</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Editar Categoria</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -152,17 +170,24 @@
             <div class="modal-body">
                 <form asp-action="EditarCategoria">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="form-group">
+                    <div class="form-group" hidden>
                         <label asp-for="Categoria.Id" class="control-label"></label>
-                        <input type="text" asp-for="Categoria.Id" id="categoriaCod"/>
+                        <input type="text" asp-for="Categoria.Id" id="categoriaCod" />
                     </div>
                     <div class="form-group">
-                        <label asp-for="Categoria.NomeCategoria" class="control-label"></label>
-                        <input asp-for="Categoria.NomeCategoria" class="form-control" id="categoriaNome"/>
+                        <label>Nome da Categoria: </label>
+                        <input asp-for="Categoria.NomeCategoria" class="form-control" id="categoriaNome" />
                         <span asp-validation-for="Categoria.NomeCategoria" class="text-danger"></span>
                     </div>
-                    <div class="form-group">
-                        <input type="submit" value="Salvar" class="btn btn-primary" />
+                    <div class="form-group text-center">
+                        <div class="row text-center" style="padding-left: 30px">
+                            <input onclick="VerificarEdicaoCategoria()" type="button" class="btn btn-primary" value="Enviar" />
+                            <div id="confirmaEdicaoCategoria" style="display: none; padding-left: 10px">
+                                Tem certeza que deseja modificar?
+                                <input type="submit" value="Sim" class="btn btn-success" />
+                                <input type="button" class="btn btn-danger" value="Não" onclick="FecharEdicaoCategoria()" />
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -176,8 +201,7 @@
         Criar novos produtos
     </button>
 </p>
-<table class="table w-100">
-    <caption>Table</caption>
+<table class="table w-100 text-center">
     <thead>
         <tr>
             <th>Nome do Produto</th>
@@ -215,17 +239,17 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">Deletar Produto</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
-                            Deseja deletar o projeto @item.NomeProduto ?
+                            Deseja deletar o produto @item.NomeProduto ?
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <a class="btn btn-secondary" asp-action="DeletarProduto" asp-route-id="@item.Id">Delete</a>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Não</button>
+                            <a class="btn btn-danger" asp-action="DeletarProduto" asp-route-id="@item.Id">Sim</a>
                         </div>
                     </div>
                 </div>
@@ -245,7 +269,7 @@
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#detalhes_@item.Id">
                         Detalhes
                     </button>
-                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#deletar_@item.Id">
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deletar_@item.Id">
                         Deletar
                     </button>
                 </td>
@@ -259,7 +283,7 @@
         Criar nova categoria
     </button>
 </p>
-<table class="table w-100" id="tabelaCategoria">
+<table class="table w-100 text-center" id="tabelaCategoria">
     <thead>
         <tr>
             <th>Categorias Disponíveis: </th>
@@ -273,7 +297,7 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">Deletar Categoria</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -283,12 +307,12 @@
                             com a categoria especificada. Segue a lista dos produtos com a categoria especificada:
                             @foreach (var proj in item.Produto)
                             {
-                                <br/> @proj.NomeProduto
+                                <br /> @proj.NomeProduto
                             }
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <a class="btn btn-secondary" asp-action="DeletarCategoriaProduto" asp-route-id="@item.Id">Delete</a>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Não</button>
+                            <a class="btn btn-danger" asp-action="DeletarCategoriaProduto" asp-route-id="@item.Id">Sim</a>
                         </div>
                     </div>
                 </div>
@@ -319,10 +343,10 @@
                 <td>
                     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#editCategoria" onclick="EditarCategoria('@item.Id', '@item.NomeCategoria')">
                         Editar
-                    </button> 
+                    </button>
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#details_@item.Id">
                         Detalhes
-                    </button> 
+                    </button>
                     <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_@item.Id">
                         Deletar
                     </button>
@@ -355,5 +379,57 @@
         document.getElementById('marcaProduto').setAttribute('value', marca);
         document.getElementById('precoProduto').setAttribute('value', preco);
         document.getElementById('categoriasProduto').setAttribute('value', categoria);
+    }
+    function VerificarEdicaoCategoria(){
+        if (!$('#categoriaNome').val()) {
+           alert("Erro no cadastro, favor preencher todos os campos.");
+        }else{
+            $('#confirmaEdicaoCategoria').show();
+        }
+    }
+    function FecharEdicaoCategoria() {
+        $('#confirmaEdicaoCategoria').hide();
+    }
+    function VerificarEdicaoProduto(){
+        if(!$('#nomeProduto').val()){
+            alert("Erro no cadastro, favor preencher todos os campos.");
+        }
+        else if(!$('#qtdProduto').val()){
+            alert("Erro no cadastro, favor preencher todos os campos.");
+        }
+        else if(!$('#marcaProduto').val()){
+            alert("Erro no cadastro, favor preencher todos os campos.");
+        }
+        else if(!$('#precoProduto').val())
+        {
+            alert("Erro no cadastro, favor preencher todos os campos.");
+        }
+        else{
+            $('#confirmaEdicaoProduto').show();
+        }
+    }
+    function FecharEdicaoProduto(){
+        $('#confirmaEdicaoProduto').hide();
+    }
+    function VerificarCriacaoProduto(){
+        if(!$('#nomeProdCriar').val()){
+            alert("Erro no cadastro, favor preencher todos os campos.");
+        }
+        else if(!$('#qtdProdCriar').val()){
+            alert("Erro no cadastro, favor preencher todos os campos.");
+        }
+        else if(!$('#marcaProdCriar').val()){
+            alert("Erro no cadastro, favor preencher todos os campos.");
+        }
+        else if(!$('#precoProdCriar').val())
+        {
+            alert("Erro no cadastro, favor preencher todos os campos.");
+        }
+        else{
+            $('#confirmaCriacaoProduto').show();
+        }
+    }
+    function FecharCriacaoProduto(){
+        $('#confirmaCriacaoProduto').hide();
     }
 </script>
